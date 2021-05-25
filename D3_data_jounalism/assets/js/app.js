@@ -131,6 +131,25 @@ d3.csv('assets/data/data.csv').then(data => {
     var bottomAxis = d3.axisBottom(xLinearScale);
     var leftAxis = d3.axisLeft(yLinearScale);
 
+    // append x axis
+    var xAxis = chartGroup.append("g")
+      .classed(".active", true)
+      .attr("transform", `translate(0, ${height})`)
+      .call(bottomAxis);
+    // appen y axis
+    var yAxis = chartGroup.append("g")
+      .call(leftAxis);
+
+    // append initial circles
+    var circlesGroup = chartGroup.selectAll("circle")
+      .data(data)
+      .enter()
+      .appen("circle")
+      .attr("cx", d => xLinearScale(d[chosenXAxis]))
+      .attr("cy", d => yLinearScale(d.healthcare))
+      .attr("r", 10)
+      .attr("fill", "blue")
+      .attr("opacity", ".5");
 
     
     var obs = data.map(elem => +elem.obesity)
