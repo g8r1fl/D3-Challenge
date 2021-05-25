@@ -144,7 +144,7 @@ d3.csv('assets/data/data.csv').then(data => {
     var circlesGroup = chartGroup.selectAll("circle")
       .data(data)
       .enter()
-      .appen("circle")
+      .append("circle")
       .attr("cx", d => xLinearScale(d[chosenXAxis]))
       .attr("cy", d => yLinearScale(d.healthcare))
       .attr("r", 10)
@@ -174,18 +174,21 @@ d3.csv('assets/data/data.csv').then(data => {
       .attr("y", 60)
       .attr("value", "income") // value to grab for event listener
       .classed("inactive", true)
-      .text("Househole Income (Median)");      
+      .text("Househole Income (Median)");    
+      
+    // append y-axis
+    chartGroup.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x", 0 - (height /2))
+      .attr("dy", "1em")
+      .classed("active", true)
+      .text("Lacks Healthcare (%)");
+
+    // updateToolTip function above csv import
+    var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);  
+
     
-    var obs = data.map(elem => +elem.obesity)
-    var hlth = data.map(elem => +elem.healthcare)
-    console.log("min value of obs; ", d3.min(obs));
-    console.log("max value of obs; ",d3.max(obs));
-    console.log("Health %: ", hlth);
-    // create update function 16-1 Ex04
-    // then run update func on the data
-    // you can hardcode the col to start (lacks healthcare, in poverty )
-    // here is where we'll bind our click events to not have to call d3.json again
-    // d3.select();
     upddateData(chartGroup, data, "ycol", "xcol");
 }).catch(error => {
     // handle error
