@@ -83,7 +83,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     .offset([80, -60])
     .html(d => (`${label} ${d[chosenXAxis]}`));
   
-  circlesGroup.call(tooltip);
+  circlesGroup.call(toolTip);
   
   circlesGroup.on("mouseover", function(data) {
     toolTip.hide(data);
@@ -209,7 +209,7 @@ d3.csv('assets/data/data.csv').then(data => {
         }
       });
     
-    upddateData(chartGroup, data, "ycol", "xcol");
+    // upddateData(chartGroup, data, "ycol", "xcol");
 }).catch(error => {
     // handle error
     console.log(error);   
