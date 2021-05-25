@@ -20,7 +20,7 @@ var margin = {
 
 // Define dimensions of the chart area
 var width = svgWidth - margin.left - margin.right;
-var weight = svgHeight - margin.top - margin.bottom;
+var height = svgHeight - margin.top - margin.bottom;
 
 // Select body, append SVG area to it, and set its dimensions
 var svg = d3
@@ -46,6 +46,50 @@ function xScale(data, chosenXAxis) {
   return xLinearScale  
 }
 
+// function used for updating x-scale var when clicked
+function renderAxes(newXScale, xAxis) {
+  var bottomAxis = d3.axisBottom(newXScale);
+
+  xAxis.transition()
+    .duration(1000)
+    .call(bottomAxis);
+  return xAxis;
+}
+
+// function for updating circles group with a transition to new circles
+function renderCircles(circlesGroup, newXScale, chosenXAxis) {
+
+  circlesGroup.transition()
+    .duration(1000)
+    .attr("cx", d => newXScale(d[chosenXAxis]));
+  return circlesGroup;  
+}
+
+// function for updaiting tooltip on circles
+function updateToolTip(chosenXAxis, circlesGroup) {
+  var label;
+
+  if (chosenXAxis === "poverty") {
+    label = "In Poverty (%)";
+  }
+  if (chosenXAxis === "age") {
+    label = "Age (Median";
+  }
+  else {
+    label = "Househole Income (Median)";
+  }
+  var toolTip = d3.tip()
+    .attr("class", "tooltip")
+    .offset([80, -60])
+    .html(d => (`${label} ${d[chosenXAxis]}`));
+  circlesGroup.call(tooltip);
+  circlesGroup.on("mouseover", function(data, index) {
+    toolTip.hide(data);
+  });
+
+  return circlesGroup;
+  
+}
 // //  make a function
 function upddateData(chartGroup, data, ycol, xcol){
     
@@ -58,7 +102,7 @@ function upddateData(chartGroup, data, ycol, xcol){
     .attr("r", 10);
 }
     
-// need to create axis labels and binding click events
+
 
 // read in the data csv
 d3.csv('assets/data/data.csv').then(data => {
@@ -77,6 +121,13 @@ d3.csv('assets/data/data.csv').then(data => {
     
     //xLinearScale funciton from abouve csv import
     var xLinearScale = xScale(data, chosenXAxis);
+
+    // create y scale function
+    var yLinearScale = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.healthcare)])
+      .range([height, 0]);
+
+
     
     var obs = data.map(elem => +elem.obesity)
     var hlth = data.map(elem => +elem.healthcare)
