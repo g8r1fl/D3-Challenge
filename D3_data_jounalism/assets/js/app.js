@@ -136,7 +136,7 @@ d3.csv('assets/data/data.csv').then(data => {
       .classed(".active", true)
       .attr("transform", `translate(0, ${height})`)
       .call(bottomAxis);
-    // appen y axis
+    // append y axis
     var yAxis = chartGroup.append("g")
       .call(leftAxis);
 
@@ -151,6 +151,30 @@ d3.csv('assets/data/data.csv').then(data => {
       .attr("fill", "blue")
       .attr("opacity", ".5");
 
+    // create group for two x-axis labels
+    var labelsGroup = chartGroup.append("g")
+      .attr("transform", `translate(${width / 2}, ${height + 20})`);
+
+    var povertyLabel = labelsGroup.append("text")
+      .attr("x", 0)
+      .attr("y", 20)
+      .attr("value", "poverty") // value to grab for event listener
+      .classed("active", true)
+      .text("In Poverty (%)");
+
+    var ageLabel = labelsGroup.append("text")
+      .attr("x", 0)
+      .attr("y", 40)
+      .attr("value", "age") // value to grab for event listener
+      .classed("inactive", true)
+      .text("Age (Median");
+
+    var incomeLabel = labelsGroup.append("text")
+      .attr("x", 0)
+      .attr("y", 60)
+      .attr("value", "income") // value to grab for event listener
+      .classed("inactive", true)
+      .text("Househole Income (Median)");      
     
     var obs = data.map(elem => +elem.obesity)
     var hlth = data.map(elem => +elem.healthcare)
