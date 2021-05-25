@@ -36,6 +36,16 @@ var chartGroup = svg.append("g")
 // initial params for xaxis
 var chosenXAxis = "poverty";
 
+// funcition used for updating x-scale when axis label clicked
+function xScale(data, chosenXAxis) {
+  // create scales
+  var xLinearScale = d3.scaleLinear()
+    .domain([d3.min(data, d => d[chosenXAxis]) * 0.8,
+      d3.max(data, d => d[chosenXAxis]) * 1.2])
+    .range([0, width]);
+  return xLinearScale  
+}
+
 // //  make a function
 function upddateData(chartGroup, data, ycol, xcol){
     
@@ -65,12 +75,13 @@ d3.csv('assets/data/data.csv').then(data => {
       // console.log(elem.smokes);
     });
     
-    // 
+    //xLinearScale funciton from abouve csv import
+    var xLinearScale = xScale(data, chosenXAxis);
     
     var obs = data.map(elem => +elem.obesity)
     var hlth = data.map(elem => +elem.healthcare)
     console.log("min value of obs; ", d3.min(obs));
-    console.log(d3.max(obs));
+    console.log("max value of obs; ",d3.max(obs));
     console.log("Health %: ", hlth);
     // create update function 16-1 Ex04
     // then run update func on the data
