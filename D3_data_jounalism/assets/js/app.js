@@ -8,14 +8,14 @@
 // HW help 3/3 use 16-3 Ex 12 for transitioning axes 
 // min 7:30 she explains axes change checklist
 var svgWidth = 960;
-var svgHeight = 500;
+var svgHeight = 700;
 
 // Define the chart's margins as an object
 var margin = {
   top: 60,
   right: 60,
-  bottom: 60,
-  left: 60
+  bottom: 90,
+  left: 100
 };
 
 // Define dimensions of the chart area
@@ -72,7 +72,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
   if (chosenXAxis === "poverty") {
     label = "In Poverty (%)";
   }
-  if (chosenXAxis === "age") {
+  else if (chosenXAxis === "age") {
     label = "Age (Median";
   }
   else {
@@ -82,25 +82,31 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     .attr("class", "tooltip")
     .offset([80, -60])
     .html(d => (`${label} ${d[chosenXAxis]}`));
+  
   circlesGroup.call(tooltip);
-  circlesGroup.on("mouseover", function(data, index) {
+  
+  circlesGroup.on("mouseover", function(data) {
     toolTip.hide(data);
-  });
+  })
+    // onmouseout event
+    .on("mouseout", function(data) {
+      toolTip.hide(data);
+    });
 
   return circlesGroup;
-  
 }
+
 // //  make a function
-function upddateData(chartGroup, data, ycol, xcol){
+// function upddateData(chartGroup, data, ycol, xcol){
     
-    chartGroup.selectAll("circle")
-    .data(data)
-    .enter()
-    .append("circle")
-    .attr("cx", d => d.poverty)
-    .attr("cy", d=> d.healthcare)
-    .attr("r", 10);
-}
+//     chartGroup.selectAll("circle")
+//     .data(data)
+//     .enter()
+//     .append("circle")
+//     .attr("cx", d => d.poverty)
+//     .attr("cy", d=> d.healthcare)
+//     .attr("r", 10);
+// }
     
 
 
@@ -149,7 +155,8 @@ d3.csv('assets/data/data.csv').then(data => {
       .attr("cy", d => yLinearScale(d.healthcare))
       .attr("r", 10)
       .attr("fill", "blue")
-      .attr("opacity", ".5");
+      .attr("opacity", ".5")
+      .text(d => d.abbr);
 
     // create group for two x-axis labels
     var labelsGroup = chartGroup.append("g")
@@ -188,6 +195,19 @@ d3.csv('assets/data/data.csv').then(data => {
     // updateToolTip function above csv import
     var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);  
 
+    // xaxis labes event listener
+    labelsGroup.selectAll("text")
+      .on("click", function() {
+        // get value of selection
+        var value = d3.select(this).attr("value");
+        if (value != chosenXAxis) {
+
+          // replaces chosenxaxis with value
+          chosenXAxis = value;
+          console.log(chosenXAxis);
+            
+        }
+      });
     
     upddateData(chartGroup, data, "ycol", "xcol");
 }).catch(error => {
