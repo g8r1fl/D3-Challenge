@@ -49,10 +49,11 @@ function upddateData(chartGroup, data, ycol, xcol){
 // read in the data csv
 d3.csv('assets/data/data.csv').then(data => {
     console.log(data);
-    var obs = data.map(elem => elem.obesity)
-    var hlth = data.map(elem => elem.healthcare)
-    console.log("Obesity %: ", obs);
-    console.log("Heath %: ", hlth);
+    var obs = data.map(elem => +elem.obesity)
+    var hlth = data.map(elem => +elem.healthcare)
+    console.log(typeof(obs[9]));
+    console.log(Math.max(obs));
+    console.log("Health %: ", hlth);
     // create update function 16-1 Ex04
     // then run update func on the data
     // you can hardcode the col to start (lacks healthcare, in poverty )
