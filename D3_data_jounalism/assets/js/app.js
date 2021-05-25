@@ -127,6 +127,10 @@ d3.csv('assets/data/data.csv').then(data => {
       .domain([0, d3.max(data, d => d.healthcare)])
       .range([height, 0]);
 
+    // create initial axis functions
+    var bottomAxis = d3.axisBottom(xLinearScale);
+    var leftAxis = d3.axisLeft(yLinearScale);
+
 
     
     var obs = data.map(elem => +elem.obesity)
