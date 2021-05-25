@@ -205,6 +205,17 @@ d3.csv('assets/data/data.csv').then(data => {
           // replaces chosenxaxis with value
           chosenXAxis = value;
           console.log(chosenXAxis);
+
+          // functions above csv iport
+          // updates x scale for new data
+          xLinearScale = xScale(data, chosenXAxis);
+
+          // updates x axis wth transition
+          xAxis = renderAxes(xLinearScale, xAxis);
+          // updates circles with new x values
+          circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+          // updates tooltips
+          circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
             
         }
       });
