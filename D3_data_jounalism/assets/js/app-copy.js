@@ -19,12 +19,11 @@ var margin = {
 };
 
 // Define dimensions of the chart area
-var width = svgWidth - margin.left - margin.right;
-var weight = svgHeight - margin.top - margin.bottom;
+var chartWidth = svgWidth - margin.left - margin.right;
+var chartHeight = svgHeight - margin.top - margin.bottom;
 
 // Select body, append SVG area to it, and set its dimensions
-var svg = d3
-  .select("#scatter")
+var svg = d3.select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
@@ -32,9 +31,6 @@ var svg = d3
 // Append a group area, then set its margins
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-// initial params for xaxis
-var chosenXAxis = "poverty";
 
 // //  make a function
 function upddateData(chartGroup, data, ycol, xcol){
@@ -53,20 +49,6 @@ function upddateData(chartGroup, data, ycol, xcol){
 // read in the data csv
 d3.csv('assets/data/data.csv').then(data => {
     console.log(data);
-    
-    // parse data
-    data.forEach(elem => {
-      elem.poverty = +elem.poverty;
-      elem.age = +elem.age;
-      elem.income = +elem.income;
-      elem.healthcare = +elem.healthcare;
-      elem.obesity = +elem.obesity;
-      elem.smokes = +elem.smokes;
-      // console.log(elem.smokes);
-    });
-    
-    // 
-    
     var obs = data.map(elem => +elem.obesity)
     var hlth = data.map(elem => +elem.healthcare)
     console.log("min value of obs; ", d3.min(obs));
