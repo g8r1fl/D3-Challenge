@@ -35,6 +35,8 @@ var chartGroup = svg.append("g")
 
 // initial params for xaxis
 var chosenXAxis = "poverty";
+// initial params for yaxis
+var chosenYAxis = "healthcare";
 
 // funcition used for updating x-scale when axis label clicked
 function xScale(data, chosenXAxis) {
@@ -95,19 +97,6 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   return circlesGroup;
 }
-
-// //  make a function
-// function upddateData(chartGroup, data, ycol, xcol){
-    
-//     chartGroup.selectAll("circle")
-//     .data(data)
-//     .enter()
-//     .append("circle")
-//     .attr("cx", d => d.poverty)
-//     .attr("cy", d=> d.healthcare)
-//     .attr("r", 10);
-// }
-    
 
 
 // read in the data csv
@@ -219,6 +208,9 @@ d3.csv('assets/data/data.csv').then(data => {
             
         }
       });
+
+      // changes clsses to change bold text
+
     
     // upddateData(chartGroup, data, "ycol", "xcol");
 }).catch(error => {
