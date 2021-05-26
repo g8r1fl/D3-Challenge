@@ -212,6 +212,16 @@ d3.csv('assets/data/data.csv').then(data => {
       .classed("inactive", true)
       .classed("aText", true)
       .text("Smokes (%)");
+
+    var obeseLabel = labelsYGroup.append("text")
+      .attr("transform", "rotate(-90)") 
+      .attr("y", 0 - margin.left)
+      .attr("x", 0 - (height /2))
+      .attr("dy", "1em")
+      .attr("value", "obese")
+      .classed("inactive", true)
+      .classed("aText", true)
+      .text("Obese (%)");
       
 
     // updateToolTip function above csv import
