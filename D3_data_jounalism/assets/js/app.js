@@ -38,7 +38,7 @@ var chosenXAxis = "poverty";
 // initial params for yaxis
 var chosenYAxis = "healthcare";
 
-// funcition used for updating x-scale when axis label clicked
+// funcition used for updating x-scale when axis label clicked RETURNS xLinearscale
 function xScale(data, chosenXAxis) {
   // create scales
   var xLinearScale = d3.scaleLinear()
@@ -46,6 +46,16 @@ function xScale(data, chosenXAxis) {
       d3.max(data, d => d[chosenXAxis]) * 1.2])
     .range([0, width]);
   return xLinearScale  
+}
+
+// funcition used for updating x-scale when axis label clicked RETURNS yLinearscale
+function yScale(data, chosenYAxis) {
+  // create scales
+  var yLinearScale = d3.scaleLinear()
+    .domain([d3.min(data, d => d[chosenYAxis]) * 0.8,
+      d3.max(data, d => d[chosenYAxis]) * 1.2])
+    .range([height, 0]);
+  return yLinearScale  
 }
 
 // function used for updating x-scale var when clicked
@@ -120,11 +130,12 @@ d3.csv('assets/data/data.csv').then(data => {
     
     //xLinearScale funciton from abouve csv import
     var xLinearScale = xScale(data, chosenXAxis);
+    var yLinearScale = yScale(data, chosenYAxis);
 
     // create y scale function
-    var yLinearScale = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.healthcare)])
-      .range([height, 0]);
+    // var yLinearScale = d3.scaleLinear()
+    //   .domain([0, d3.max(data, d => d.healthcare)])
+    //   .range([height, 0]);
 
     // create initial axis functions
     var bottomAxis = d3.axisBottom(xLinearScale);
@@ -145,7 +156,7 @@ d3.csv('assets/data/data.csv').then(data => {
       .enter()
       .append("circle")
       .attr("cx", d => xLinearScale(d[chosenXAxis]))
-      .attr("cy", d => yLinearScale(d.healthcare))
+      .attr("cy", d => yLinearScale(d[chosenYAxis]))
       .attr("r", 10)
       .attr("fill", "blue")
       .attr("opacity", ".5")
@@ -176,9 +187,9 @@ d3.csv('assets/data/data.csv').then(data => {
       .classed("inactive", true)
       .text("Househole Income (Median)"); 
 
-    // create group for three yaxis labels
-    var labelsYGroup = chartgroup.append("g")
-      .attr("transform", `transate(${height / 2}, ${75 - margin.left})`)
+    // create group for three y-axis labels
+    var labelsYGroup = chartGroup.append("g")
+      .attr("transform", `transate(${height / 2}, ${75 - margin.left})`);
       
     // var smokesLabel = labelsXGroup.append("text"
     //   .attr("transform", "rotatate(-90)"))  
