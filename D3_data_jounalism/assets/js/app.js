@@ -189,24 +189,26 @@ d3.csv('assets/data/data.csv').then(data => {
 
     // create group for three y-axis labels
     var labelsYGroup = chartGroup.append("g")
-      .attr("transform", `transate(${height / 2}, ${75 - margin.left})`);
-      
-    // var smokesLabel = labelsXGroup.append("text"
-    //   .attr("transform", "rotatate(-90)"))  
-    //   .attr("y", 0 - margin.left)
+      .call(leftAxis);
+      // .attr("transform", `translate(${height / 2}, ${75 - margin.left})`);
+   
+    // append y-axis
+    var healthcareLabel = labelsYGroup.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 75 - margin.left)
+      .attr("x", 0 - (height /2))
+      // .attr("dy", "1em")
+      .classed("active", true)
+      .text("Lacks Healthcare (%)");
+       
+    // var smokesLabel = labelsYGroup.append("text")
+    //   .attr("transform", "rotatate(-90)") 
+    //   .attr("y", 50 - margin.left)
     //   attr("x", 0 - (height /2))
     //   .attr("dy", "1em")
     //   .classed("inactive", true)
     //   .text("Smokes (%)");
       
-    // append y-axis
-    var healthcareLabel = labelsYGroup.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 50 - margin.left)
-      .attr("x", 0 - (height /2))
-      .attr("dy", "1em")
-      .classed("active", true)
-      .text("Lacks Healthcare (%)");
 
     // updateToolTip function above csv import
     var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);  
