@@ -195,19 +195,23 @@ d3.csv('assets/data/data.csv').then(data => {
     // append y-axis
     var healthcareLabel = labelsYGroup.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 75 - margin.left)
+      .attr("y", 50 - margin.left)
       .attr("x", 0 - (height /2))
-      // .attr("dy", "1em")
+      .attr("dy", "1em")
+      .attr("value", "healthcare")
       .classed("active", true)
+      .classed("aText", true)
       .text("Lacks Healthcare (%)");
        
-    // var smokesLabel = labelsYGroup.append("text")
-    //   .attr("transform", "rotatate(-90)") 
-    //   .attr("y", 50 - margin.left)
-    //   attr("x", 0 - (height /2))
-    //   .attr("dy", "1em")
-    //   .classed("inactive", true)
-    //   .text("Smokes (%)");
+    var smokesLabel = labelsYGroup.append("text")
+      .attr("transform", "rotate(-90)") 
+      .attr("y", 25 - margin.left)
+      .attr("x", 0 - (height /2))
+      .attr("dy", "1em")
+      .attr("value", "smokes")
+      .classed("inactive", true)
+      .classed("aText", true)
+      .text("Smokes (%)");
       
 
     // updateToolTip function above csv import
