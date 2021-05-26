@@ -71,6 +71,10 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 function updateToolTip(chosenXAxis, circlesGroup) {
   var label;
 
+  //  lebels ={"poverty": "In Povrty (%)"} I can put Y axis here in the dict also
+  // `${labels[chosenXAxis]}`
+  // d3 tip unbind 
+
   if (chosenXAxis === "poverty") {
     label = "In Poverty (%)";
   }
@@ -124,7 +128,7 @@ d3.csv('assets/data/data.csv').then(data => {
 
     // create initial axis functions
     var bottomAxis = d3.axisBottom(xLinearScale);
-    var leftAxis = d3.axisLeft(yLinearScale);
+    var leftAxis = d3.axisLeft(yLinearScale); //she mentioned y is reversed when used scale in D3
 
     // append x axis
     var xAxis = chartGroup.append("g")
@@ -147,35 +151,47 @@ d3.csv('assets/data/data.csv').then(data => {
       .attr("opacity", ".5")
       .text(d => d.abbr);
 
-    // create group for two x-axis labels
-    var labelsGroup = chartGroup.append("g")
+    // create group for three x-axis labels
+    var labelsXGroup = chartGroup.append("g")
       .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
-    var povertyLabel = labelsGroup.append("text")
+    var povertyLabel = labelsXGroup.append("text")
       .attr("x", 0)
       .attr("y", 20)
       .attr("value", "poverty") // value to grab for event listener
       .classed("active", true)
       .text("In Poverty (%)");
 
-    var ageLabel = labelsGroup.append("text")
+    var ageLabel = labelsXGroup.append("text")
       .attr("x", 0)
       .attr("y", 40)
       .attr("value", "age") // value to grab for event listener
       .classed("inactive", true)
       .text("Age (Median");
 
-    var incomeLabel = labelsGroup.append("text")
+    var incomeLabel = labelsXGroup.append("text")
       .attr("x", 0)
       .attr("y", 60)
       .attr("value", "income") // value to grab for event listener
       .classed("inactive", true)
-      .text("Househole Income (Median)");    
+      .text("Househole Income (Median)"); 
+
+    // create group for three yaxis labels
+    var labelsYGroup = chartgroup.append("g")
+      .attr("transform", `transate(${height / 2}, ${75 - margin.left})`)
+      
+    // var smokesLabel = labelsXGroup.append("text"
+    //   .attr("transform", "rotatate(-90)"))  
+    //   .attr("y", 0 - margin.left)
+    //   attr("x", 0 - (height /2))
+    //   .attr("dy", "1em")
+    //   .classed("inactive", true)
+    //   .text("Smokes (%)");
       
     // append y-axis
-    chartGroup.append("text")
+    var healthcareLabel = labelsYGroup.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
+      .attr("y", 50 - margin.left)
       .attr("x", 0 - (height /2))
       .attr("dy", "1em")
       .classed("active", true)
@@ -185,7 +201,7 @@ d3.csv('assets/data/data.csv').then(data => {
     var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);  
 
     // xaxis labes event listener
-    labelsGroup.selectAll("text")
+    labelsXGroup.selectAll("text")
       .on("click", function() {
         // get value of selection
         var value = d3.select(this).attr("value");
