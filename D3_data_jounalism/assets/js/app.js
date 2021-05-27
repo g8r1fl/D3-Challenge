@@ -68,6 +68,16 @@ function renderAxes(newXScale, xAxis) {
   return xAxis;
 }
 
+function renderYAxes(newYScale, yAxis) {
+
+  var leftAxis = d3.axisLeft(newYScale);
+
+  yAxis.transition()
+    .duration(1000)
+    .call(leftAxis);
+  return yAxis;
+}
+
 // function for updating circles group with a transition to new circles
 function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 
@@ -237,6 +247,7 @@ d3.csv('assets/data/data.csv').then(data => {
           // replaces chosenxaxis with value
           chosenXAxis = value;
           console.log(chosenXAxis);
+          
 
           // functions above csv iport
           // updates x scale for new data
@@ -248,6 +259,32 @@ d3.csv('assets/data/data.csv').then(data => {
           circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
           // updates tooltips
           circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+            
+        }
+      });
+
+    // yaxis labes event listener
+    labelsYGroup.selectAll("text")
+      .on("click", function() {
+        // get value of selection
+        var value = d3.select(this).attr("value");
+        if (value != chosenYAxis) {
+
+          // replaces chosenYaxis with value
+          chosenYAxis = value;
+          console.log(chosenYAxis);
+          console.log(`data.${chosenYAxis}`)
+
+          // functions above csv iport
+          // updates y scale for new data
+          yLinearScale = yScale(data, chosenYAxis);
+
+          // updates x axis wth transition
+          yAxis = renderYAxes(yLinearScale, yAxis);
+          // updates circles with new x values
+          circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
+          // updates tooltips
+          circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
             
         }
       });
