@@ -271,6 +271,41 @@ d3.csv('assets/data/data.csv').then(data => {
           circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
           // updates tooltips
           circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+
+          // change classes to change bold text
+          if (chosenXAxis === "poverty") {
+            povertyLabel
+              .classed("active", true)
+              .classed("inactive", false);
+            ageLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            incomeLabel
+              .classed("active", false)
+              .classed("inactive", true);
+          }
+          else if (chosenXAxis === "age") {
+            ageLabel
+              .classed("active", true)
+              .classed("inactive", false);
+            povertyLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            incomeLabel
+              .classed("active", false)
+              .classed("inactive", true);
+          }
+          else {
+            incomeLabel
+              .classed("active", true)
+              .classed("inactive", false);
+            povertyLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            ageLabel
+              .classed("active", false)
+              .classed("inactive", true);
+          }
             
         }
       });
