@@ -79,11 +79,12 @@ function renderYAxes(newYScale, yAxis) {
 }
 
 // function for updating circles group with a transition to new circles
-function renderCircles(circlesGroup, newXScale, chosenXAxis) {
+function renderCircles(circlesGroup, newXScale, yLinearScale, chosenXAxis, chosenYAxis) {
 
   circlesGroup.transition()
     .duration(1000)
-    .attr("cx", d => newXScale(d[chosenXAxis]));
+    .attr("cx", d => newXScale(d[chosenXAxis]))
+    .attr("cy", d => yLinearScale(d[chosenYAxis]));
   return circlesGroup;  
 }
 
@@ -233,12 +234,12 @@ d3.csv('assets/data/data.csv').then(data => {
       .classed("aText", true)
       .text("Smokes (%)");
 
-    var obeseLabel = labelsYGroup.append("text")
+    var obesityLabel = labelsYGroup.append("text")
       .attr("transform", "rotate(-90)") 
       .attr("y", 0 - margin.left)
       .attr("x", 0 - (height /2))
       .attr("dy", "1em")
-      .attr("value", "obese")
+      .attr("value", "obesity")
       .classed("inactive", true)
       .classed("aText", true)
       .text("Obese (%)");
@@ -262,11 +263,12 @@ d3.csv('assets/data/data.csv').then(data => {
           // functions above csv iport
           // updates x scale for new data
           xLinearScale = xScale(data, chosenXAxis);
+          yLinearScale = yScale(data, chosenYAxis);
 
           // updates x axis wth transition
           xAxis = renderAxes(xLinearScale, xAxis);
           // updates circles with new x values
-          circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, chosenYAxis);
+          circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
           // updates tooltips
           circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
             
