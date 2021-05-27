@@ -87,6 +87,16 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
   return circlesGroup;  
 }
 
+// function for updating y circles group with a transition to new circles
+function renderYCircles(circlesGroup, newYScale, xLinearScale, chosenYAxis, chosenXAxis) {
+  
+  circlesGroup.transition()
+    .duration(1000)
+    .attr("cx", d => xLinearScale(d[chosenXAxis]))
+    .attr("cy", d => newYScale(d[chosenYAxis]));
+  return circlesGroup;  
+}
+
 // function for updaiting tooltip on circles
 function updateToolTip(chosenXAxis, circlesGroup) {
   var label;
@@ -256,7 +266,7 @@ d3.csv('assets/data/data.csv').then(data => {
           // updates x axis wth transition
           xAxis = renderAxes(xLinearScale, xAxis);
           // updates circles with new x values
-          circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+          circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, chosenYAxis);
           // updates tooltips
           circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
             
@@ -273,16 +283,17 @@ d3.csv('assets/data/data.csv').then(data => {
           // replaces chosenYaxis with value
           chosenYAxis = value;
           console.log(chosenYAxis);
-          console.log(`data.${chosenYAxis}`)
+          console.log(chosenXAxis);
 
           // functions above csv iport
           // updates y scale for new data
           yLinearScale = yScale(data, chosenYAxis);
-
-          // updates x axis wth transition
+          xLinearScale = xScale(data, chosenXAxis);
+          
+          // updates y axis wth transition
           yAxis = renderYAxes(yLinearScale, yAxis);
-          // updates circles with new x values
-          circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
+          // updates circles with new y values
+          circlesGroup = renderYCircles(circlesGroup, yLinearScale, xLinearScale, chosenYAxis, chosenXAxis);
           // updates tooltips
           circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
             
