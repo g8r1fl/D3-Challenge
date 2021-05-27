@@ -69,7 +69,6 @@ function renderAxes(newXScale, xAxis) {
 }
 
 function renderYAxes(newYScale, yAxis) {
-
   var leftAxis = d3.axisLeft(newYScale);
 
   yAxis.transition()
@@ -113,7 +112,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     label = "Age (Median";
   }
   else {
-    label = "Househole Income (Median)";
+    label = "Household Income (Median)";
   }
   var toolTip = d3.tip()
     .attr("class", "tooltip")
@@ -206,7 +205,7 @@ d3.csv('assets/data/data.csv').then(data => {
       .attr("y", 60)
       .attr("value", "income") // value to grab for event listener
       .classed("inactive", true)
-      .text("Househole Income (Median)"); 
+      .text("Household Income (Median)"); 
 
     // create group for three y-axis labels
     var labelsYGroup = chartGroup.append("g")
@@ -333,44 +332,44 @@ d3.csv('assets/data/data.csv').then(data => {
           circlesGroup = renderYCircles(circlesGroup, yLinearScale, xLinearScale, chosenYAxis, chosenXAxis);
           // updates tooltips
           circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
+
+          // change classes to change bold text
+          if (chosenYAxis === "healthcare") {
+            healthcareLabel
+              .classed("active", true)
+              .classed("inactive", false);
+            smokesLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            obesityLabel
+              .classed("active", false)
+              .classed("inactive", true);
+          }
+          else if (chosenYAxis === "smokes") {
+            smokesLabel
+              .classed("active", true)
+              .classed("inactive", false);
+            healthcareLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            obesityLabel
+              .classed("active", false)
+              .classed("inactive", true);
+          }
+          else {
+            obesityLabel
+              .classed("active", true)
+              .classed("inactive", false);
+            healthcareLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            smokesLabel
+              .classed("active", false)
+              .classed("inactive", true);
+          }
             
         }
       });
-
-      // change classes to change bold text
-      if (chosenYAxis === "healthcare") {
-        healthcareLabel
-          .classed("active", true)
-          .classed("inactive", false);
-        smokesLabel
-          .classed("active", false)
-          .classed("inactive", true);
-        obesityLabel
-          .classed("active", false)
-          .classed("inactive", true);
-      }
-      else if (chosenYAxis === "smokes") {
-        smokesLabel
-          .classed("active", true)
-          .classed("inactive", false);
-        healthcareLabel
-          .classed("active", false)
-          .classed("inactive", true);
-        obesityLabel
-          .classed("active", false)
-          .classed("inactive", true);
-      }
-      else {
-        obesityLabel
-          .classed("active", true)
-          .classed("inactive", false);
-        healthcareLabel
-          .classed("active", false)
-          .classed("inactive", true);
-        smokesLabel
-          .classed("active", false)
-          .classed("inactive", true);
-      }
 
     
     // upddateData(chartGroup, data, "ycol", "xcol");
